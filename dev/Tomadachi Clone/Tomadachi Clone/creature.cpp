@@ -7,7 +7,8 @@ Creature::Creature()
 	growth_(0),
 	hunger_(100),
 	interaction_(0),
-	health_(100)
+	health_(100),
+	name_("")
 {
 }
 
@@ -41,6 +42,11 @@ Creature::Personality Creature::personality() const
 	return personality_;
 }
 
+const std::string& Creature::name() const
+{
+	return name_;
+}
+
 void Creature::changeAffection(int amount)
 {
 	affection_ = limitStat(affection_ + amount);
@@ -64,6 +70,11 @@ void Creature::changeInteraction(int amount)
 void Creature::changeHealth(int amount)
 {
 	health_ = limitStat(health_ + amount);
+}
+
+void Creature::setName(const std::string& name)
+{
+	name_ = name;
 }
 
 int Creature::limitStat(int value)
