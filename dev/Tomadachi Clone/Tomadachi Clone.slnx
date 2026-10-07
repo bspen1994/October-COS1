@@ -3,5 +3,5 @@
     <Platform Name="x64" />
     <Platform Name="x86" />
   </Configurations>
-  <Project Path="Tomadachi Clone/Tomadachi Clone.vcxproj" />
+  <Project Path="Tomadachi Clone/Tomadachi Clone.vcxproj" Id="f3b09f1b-f248-43d9-af6d-53fd99699eb6" />
 </Solution>
