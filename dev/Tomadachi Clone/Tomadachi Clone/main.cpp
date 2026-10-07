@@ -1,6 +1,5 @@
-
-
 #include <iostream>
+#include "mainLoop.h"
 
 int main()
 {
@@ -21,8 +20,8 @@ int main()
         {
         case 1:
         {
-            //TODO: Change when mainloop is made
-            std::cout << "Will fill this in when the main loop is done\n";
+            mainLoop game;
+            game.run();
             break;
         }
         case 2:

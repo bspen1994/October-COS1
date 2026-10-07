@@ -7,15 +7,20 @@ void mainLoop::run()
 {
 	std::string creatureName;
 	
+	//Asks to name your creature before the mainloop actually runs.
 	std::cout << "Your creature has hatched! What will you name it? ";
-	std::getline(std::cin, creatureName);
+	std::getline(std::cin >> std::ws, creatureName);
 
+	//Sets the creatures name
 	creature_.setName(creatureName);
 
 	bool running = true;
 
+	//Main loop that uses the handleChoice as a switch to deliniate all the code going in one spot.
+	//Allows for some level of modularity if I want to change things later
 	while (running)
 	{
+		//TODO: Create a clearscreen, menu stacking is ugly
 		showStats();
 		showMenu();
 		
@@ -55,11 +60,13 @@ void mainLoop::showMenu() const
 	std::cout << "\n1. Feed\n";
 	std::cout << "2. Play\n";
 	std::cout << "3. Give Medication\n";
-	std::cout << "0. Quit\n";
+	std::cout << "0. Quit to main menu\n";
 }
 
 bool mainLoop::handleChoice(int choice)
 {
+	//Handles all of the stat changes through interaction
+	//Can be expanded or changed to be more involved later
 	switch (choice)
 	{
 	case 0:
@@ -90,6 +97,7 @@ bool mainLoop::handleChoice(int choice)
 
 void mainLoop::advanceTime()
 {
+	//Basic input turn end to make the creature hungrier and less healthy over time
 	creature_.changeHunger(-2);
 	creature_.changeHealth(-1);
 }
