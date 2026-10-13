@@ -47,7 +47,14 @@ void mainLoop::run()
 
 void mainLoop::showStats() const
 {
+	display display;
+	display.clearScreen();
+
 	std::cout << "\n---" << creature_.name() << "---\n";
+
+	std::string art = display.getArt(creature_);
+
+	std::cout << art;
 	std::cout << "Affection:   " << creature_.affection() << "\n";
 	std::cout << "Growth:      " << creature_.growth() << "\n";
 	std::cout << "Hunger:      " << creature_.hunger() << "\n";

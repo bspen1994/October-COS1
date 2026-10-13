@@ -6,7 +6,7 @@ int main()
 
     while (true)
     {
-
+        std::cout << "\t=== Pet Keeper ===\n";
         std::cout << "Welcome to your friend caretaker app!\n\n";
         std::cout << "Please select an option below:\n";
         std::cout << "1: New Game\n";

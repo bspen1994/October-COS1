@@ -9,7 +9,10 @@ public:
 		Playful,
 		Shy,
 		Curious,
-		Calm
+		Calm,
+		Hungry,
+		Sick,
+		Hurt
 	};
 
 	Creature();

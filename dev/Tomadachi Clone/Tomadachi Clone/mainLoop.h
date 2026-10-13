@@ -1,5 +1,6 @@
 #pragma once
 #include "creature.h"
+#include "display.h"
 
 class mainLoop
 {

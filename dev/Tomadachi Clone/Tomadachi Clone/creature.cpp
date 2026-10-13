@@ -96,7 +96,7 @@ int Creature::limitStat(int value)
 Creature::Personality Creature::randomPersonality()
 {
 	static std::mt19937 rng{ std::random_device{}() };
-	std::uniform_int_distribution<int> distribution(0, 3);
+	std::uniform_int_distribution<int> distribution(0, 6);
 
 	return static_cast<Personality>(distribution(rng));
 }
