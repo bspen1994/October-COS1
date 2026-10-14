@@ -47,24 +47,128 @@ const std::string& Creature::name() const
 	return name_;
 }
 
+int Creature::getModifiedAffection(int amount) const
+{
+	double multiplier = 1.0;
+
+	switch (personality_)
+	{
+	case Personality::Shy:
+		multiplier = 0.6;
+	case Personality::Hungry:
+		multiplier = 1.4;
+	case Personality::Sick:
+		multiplier = 0.8;
+	case Personality::Hurt:
+		multiplier = 0.7;
+	case Personality::Playful:
+		multiplier = 1.5;
+	case Personality::Calm:
+		multiplier = 1.0;
+	default:
+		multiplier = 1.0;
+	}
+
+	return static_cast<int>(amount * multiplier);
+}
+
+int Creature::getModifiedHunger(int amount) const
+{
+	double multiplier = 1.0;
+
+	switch (personality_)
+	{
+	case Personality::Shy:
+		multiplier = 0.6;
+	case Personality::Hungry:
+		multiplier = 1.4;
+	case Personality::Sick:
+		multiplier = 0.8;
+	case Personality::Hurt:
+		multiplier = 0.7;
+	case Personality::Playful:
+		multiplier = 1.5;
+	case Personality::Calm:
+		multiplier = 1.0;
+	default:
+		multiplier = 1.0;
+	}
+
+	return static_cast<int>(amount * multiplier);
+}
+
+int Creature::getModifiedGrowth(int amount) const
+{
+	double multiplier = 1.0;
+
+	switch (personality_)
+	{
+	case Personality::Shy:
+		multiplier = 0.6;
+	case Personality::Hungry:
+		multiplier = 1.4;
+	case Personality::Sick:
+		multiplier = 0.8;
+	case Personality::Hurt:
+		multiplier = 0.7;
+	case Personality::Playful:
+		multiplier = 1.5;
+	case Personality::Calm:
+		multiplier = 1.0;
+	default:
+		multiplier = 1.0;
+	}
+
+	return static_cast<int>(amount * multiplier);
+}
+
+int Creature::getModifiedInteraction(int amount) const
+{
+	double multiplier = 1.0;
+
+	switch (personality_)
+	{
+	case Personality::Shy:
+		multiplier = 0.6;
+	case Personality::Hungry:
+		multiplier = 1.4;
+	case Personality::Sick:
+		multiplier = 0.8;
+	case Personality::Hurt:
+		multiplier = 0.7;
+	case Personality::Playful:
+		multiplier = 1.5;
+	case Personality::Calm:
+		multiplier = 1.0;
+	default:
+		multiplier = 1.0;
+	}
+
+	return static_cast<int>(amount * multiplier);
+}
+
 void Creature::changeAffection(int amount)
 {
-	affection_ = limitStat(affection_ + amount);
+	int finalChange = getModifiedAffection(amount);
+	affection_ = limitStat(affection_ + finalChange);
 }
 
 void Creature::changeGrowth(int amount)
 {
-	growth_ = limitStat(growth_ + amount);
+	int finalChange = getModifiedGrowth(amount);
+	growth_ = limitStat(growth_ + finalChange);
 }
 
 void Creature::changeHunger(int amount)
 {
-	hunger_ = limitStat(hunger_ + amount);
+	int finalChange = getModifiedHunger(amount);
+	hunger_ = limitStat(hunger_ + finalChange);
 }
 
 void Creature::changeInteraction(int amount)
 {
-	interaction_ = limitStat(interaction_ + amount);
+	int finalChange = getModifiedInteraction(amount);
+	interaction_ = limitStat(interaction_ + finalChange);
 }
 
 void Creature::changeHealth(int amount)
