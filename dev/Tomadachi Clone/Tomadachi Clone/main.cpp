@@ -1,11 +1,16 @@
 #include <iostream>
 #include "mainLoop.h"
+#include "display.h"
 
 int main()
 {
 
+
     while (true)
     {
+        display display;
+        //display.clearScreen();
+
         std::cout << "\t=== Pet Keeper ===\n";
         std::cout << "Welcome to your friend caretaker app!\n\n";
         std::cout << "Please select an option below:\n";
@@ -26,7 +31,9 @@ int main()
         }
         case 2:
             //TODO: Fill out game instructions at a later time
-            std::cout << "This will be filled out at a later time\n";
+            display.clearScreen();
+            display.getInstructions();
+            std::cin.get();
             break;
         case 3:
             std::cout << "Thank you for playing!\n";

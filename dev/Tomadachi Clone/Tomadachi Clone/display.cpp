@@ -73,3 +73,16 @@ void display::clearScreen()
     std::system("clear");
 #endif
 }
+
+void display::getInstructions()
+{
+    std::cout << "\t ~Instructions~\n";
+    std::cout << "You must keep your pet happy and healthy.\n";
+    std::cout << "You can do this by using the provided options: \n";
+    std::cout << "1. Feed: This gives your pet food and fills their hunger bar.\n";
+    std::cout << "2. Pet: This allows you to pet your pet and fills the affection bar.\n";
+    std::cout << "3. Give Medicine: This heals your pet but also lowers their hunger bar.\n";
+    std::cout << "Press enter to return to previous menu.\n";
+    std::cin.get();
+    
+}

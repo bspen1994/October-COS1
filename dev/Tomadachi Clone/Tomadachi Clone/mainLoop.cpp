@@ -5,8 +5,11 @@
 
 void mainLoop::run()
 {
+	display display;
 	std::string creatureName;
 	
+	display.clearScreen();
+
 	//Asks to name your creature before the mainloop actually runs.
 	std::cout << "Your creature has hatched! What will you name it? ";
 	std::getline(std::cin >> std::ws, creatureName);

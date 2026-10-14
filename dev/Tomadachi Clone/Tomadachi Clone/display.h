@@ -9,5 +9,6 @@ public:
 	std::string getArt(const Creature& creature);
 
 	void clearScreen();
+	void getInstructions();
 };
 
