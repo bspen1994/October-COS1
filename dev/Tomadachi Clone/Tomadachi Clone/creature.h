@@ -9,7 +9,10 @@ public:
 		Playful,
 		Shy,
 		Curious,
-		Calm
+		Calm,
+		Hungry,
+		Sick,
+		Hurt
 	};
 
 	Creature();
@@ -21,6 +24,11 @@ public:
 	int health() const;
 	Personality personality() const;
 	const std::string& name() const;
+
+	int getModifiedAffection(int amount) const;
+	int getModifiedHunger(int amount) const;
+	int getModifiedGrowth(int amount) const;
+	int getModifiedInteraction(int amount) const;
 
 	void changeAffection(int amount);
 	void changeGrowth(int amount);

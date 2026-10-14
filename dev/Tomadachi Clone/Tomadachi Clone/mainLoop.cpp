@@ -5,8 +5,11 @@
 
 void mainLoop::run()
 {
+	display display;
 	std::string creatureName;
 	
+	display.clearScreen();
+
 	//Asks to name your creature before the mainloop actually runs.
 	std::cout << "Your creature has hatched! What will you name it? ";
 	std::getline(std::cin >> std::ws, creatureName);
@@ -47,7 +50,14 @@ void mainLoop::run()
 
 void mainLoop::showStats() const
 {
+	display display;
+	display.clearScreen();
+
 	std::cout << "\n---" << creature_.name() << "---\n";
+
+	std::string art = display.getArt(creature_);
+
+	std::cout << art;
 	std::cout << "Affection:   " << creature_.affection() << "\n";
 	std::cout << "Growth:      " << creature_.growth() << "\n";
 	std::cout << "Hunger:      " << creature_.hunger() << "\n";
