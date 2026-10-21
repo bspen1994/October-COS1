@@ -2,7 +2,7 @@
 <br>
 # Project & Portfolio 1
 
-### Student First & Last Name
+### Brandon Spencer
 
 Hello my name is [Brandon Spencer]. I am a student from [Ohio]. The purpose of this repository is to practice development using version control. This work will help me begin to build a portfolio of skills and accomplishment that can be shared in the future.
 
@@ -50,13 +50,20 @@ I need to implement the personalities and have them effect the gameplay. I want 
 ### Week 3
 
 ⚙️ Overview - What I worked on this past week
-<br>
+
+I added in the ability to create new creatures past the initial creature when you start. Added in a new save system into the game that allows you to save your creatures and bring them back from the main menu. Also simplified the menus and brough most front facing text and menus into the display class. And lastly created a vector to hold the creatures you create as pointers.
+
 🌵 Challenges - What problems did I have & how I'm addressing them
-<br>
+
+I am still a bit shaky on save systems, has to do a bit of research to get that section done.
+
 🏆 Accomplishments - What is something I "leveled up" on this week
+
+I would say the main things I have leveled up on would be looking through my code and just making it either simpler or moving it to more appropriate areas like the menus I mentioned earlier.
 <br>
 🔮 Next Steps - What I plan to prioritize and do next
 
+Since week 4 is mainly finishing the project I won't be adding anything too major as I am confident in the feature set as is. But I want to focus on ensuring nothing breaks and polishing up on what is left.
 ### Week 4
 
 ⚙️ Overview - What I worked on this past week

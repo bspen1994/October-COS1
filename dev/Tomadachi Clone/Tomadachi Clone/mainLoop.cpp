@@ -28,7 +28,6 @@ void mainLoop::run()
 	while (running)
 	{
 		display.clearScreen();
-		showStable();
 		display.showStableMenu();
 
 		int stableChoice;
@@ -85,7 +84,6 @@ void mainLoop::runWithLoad()
 		while (isStable)
 		{
 			display.clearScreen();
-			showStable();
 			display.showStableMenu();
 
 			int stableChoice;
