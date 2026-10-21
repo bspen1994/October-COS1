@@ -10,5 +10,8 @@ public:
 
 	void clearScreen();
 	void getInstructions();
+
+	void showMainMenu() const;
+	void showGameMenu() const;
 };
 

@@ -4,22 +4,21 @@
 
 int main()
 {
-
+    display display;
 
     while (true)
     {
-        display display;
-        //display.clearScreen();
-
-        std::cout << "\t=== Pet Keeper ===\n";
-        std::cout << "Welcome to your friend caretaker app!\n\n";
-        std::cout << "Please select an option below:\n";
-        std::cout << "1: New Game\n";
-        std::cout << "2: Instructions\n";
-        std::cout << "3: Exit game\n";
+        display.clearScreen();
+        display.showMainMenu();
 
         int choice;
-        std::cin >> choice;
+        if (!(std::cin >> choice))
+        {
+            std::cout << "Invalid input. Please enter a number.\n";
+            std::cin.clear();
+            std::cin.ignore(10000, '\n');
+            continue;
+        }
 
         switch (choice)
         {
@@ -27,10 +26,10 @@ int main()
         {
             mainLoop game;
             game.run();
-            break;
+            
         }
+            break;
         case 2:
-            //TODO: Fill out game instructions at a later time
             display.clearScreen();
             display.getInstructions();
             std::cin.get();
@@ -40,6 +39,7 @@ int main()
             return 0;
         default:
             std::cout << "Invalid option. Please selecet 1 - 3.\n";
+            std::cin.get();
             break;
         }
 

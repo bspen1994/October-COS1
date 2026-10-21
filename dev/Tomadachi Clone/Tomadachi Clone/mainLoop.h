@@ -11,7 +11,6 @@ private:
 	Creature creature_;
 
 	void showStats() const;
-	void showMenu() const;
 	bool handleChoice(int choice);
 	void advanceTime();
 };

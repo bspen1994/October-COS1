@@ -86,3 +86,24 @@ void display::getInstructions()
     std::cin.get();
     
 }
+
+void display::showMainMenu() const
+{
+    std::cout << "\t=== Pet Keeper ===\n";
+    std::cout << "Welcome to your friend caretaker app!\n\n";
+    std::cout << "Please select an option below:\n";
+    std::cout << "1: New Game\n";
+    std::cout << "2: Instructions\n";
+    std::cout << "3: Exit game\n\n";
+    std::cout << "Enter choice (1-3): ";
+
+}
+
+void display::showGameMenu() const
+{
+    std::cout << "\n1. Feed\n";
+    std::cout << "2. Play\n";
+    std::cout << "3. Give Medication\n";
+    std::cout << "0. Quit to main menu\n";
+    std::cout << "Choose an action: ";
+}

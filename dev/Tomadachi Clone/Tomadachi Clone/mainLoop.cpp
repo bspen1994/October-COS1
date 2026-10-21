@@ -23,12 +23,11 @@ void mainLoop::run()
 	//Allows for some level of modularity if I want to change things later
 	while (running)
 	{
-		//TODO: Create a clearscreen, menu stacking is ugly
+		
 		showStats();
-		showMenu();
+		display.showGameMenu();
 		
 		int choice;
-		std::cout << "Choose an action: ";
 		
 		if (std::cin >> choice)
 		{
@@ -54,23 +53,12 @@ void mainLoop::showStats() const
 	display.clearScreen();
 
 	std::cout << "\n---" << creature_.name() << "---\n";
-
-	std::string art = display.getArt(creature_);
-
-	std::cout << art;
+	std::cout << display.getArt(creature_);
 	std::cout << "Affection:   " << creature_.affection() << "\n";
 	std::cout << "Growth:      " << creature_.growth() << "\n";
 	std::cout << "Hunger:      " << creature_.hunger() << "\n";
 	std::cout << "Interaction: " << creature_.interaction() << "\n";
 	std::cout << "Health:      " << creature_.health() << "\n";
-}
-
-void mainLoop::showMenu() const
-{
-	std::cout << "\n1. Feed\n";
-	std::cout << "2. Play\n";
-	std::cout << "3. Give Medication\n";
-	std::cout << "0. Quit to main menu\n";
 }
 
 bool mainLoop::handleChoice(int choice)
