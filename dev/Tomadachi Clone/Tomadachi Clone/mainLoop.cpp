@@ -7,6 +7,7 @@ void mainLoop::run()
 {
 	display display;
 	std::string creatureName;
+	Creature* currentPet = new Creature();
 	
 	display.clearScreen();
 
@@ -15,7 +16,9 @@ void mainLoop::run()
 	std::getline(std::cin >> std::ws, creatureName);
 
 	//Sets the creatures name
-	creature_.setName(creatureName);
+	currentPet->setName(creatureName);
+
+	stable_.push_back(currentPet);
 
 	bool running = true;
 
@@ -23,19 +26,122 @@ void mainLoop::run()
 	//Allows for some level of modularity if I want to change things later
 	while (running)
 	{
-		
-		showStats();
+		display.clearScreen();
+		showStable();
+		display.showStableMenu();
+
+		int stableChoice;
+		if (std::cin >> stableChoice)
+		{
+			if (stableChoice == 0)
+			{
+				running = false;
+			}
+			else if (stableChoice == 1)
+			{
+				selectPet();
+			}
+			else if (stableChoice == 2)
+			{
+				display.clearScreen();
+				Creature* newPet = new Creature();
+
+				std::cout << "A new egg is cracking! What will you name this creature? ";
+				std::string newCreatureName;
+				std::getline(std::cin >> std::ws, newCreatureName);
+				newPet->setName(newCreatureName);
+
+				stable_.push_back(newPet);
+
+				std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
+				std::cin.get();
+			}
+			else
+			{
+				std::cout << "Invalid choice. Press Enter to continue...";
+				std::cin.ignore(10000, '\n'); std::cin.get();
+			}
+		}
+		else
+		{
+			std::cout << "Please enter a valid number.\n";
+			std::cin.clear();
+			std::cin.ignore(10000, '\n');
+		}
+	}
+}
+
+mainLoop::~mainLoop()
+{
+	for (Creature* ptr : stable_)
+	{
+		delete ptr;
+	}
+	stable_.clear();
+}
+
+void mainLoop::showStats(const Creature* creature) const
+{
+	display display;
+	display.clearScreen();
+
+	std::cout << "\n---" << creature->name() << "---\n";
+	std::cout << display.getArt(*creature);
+	std::cout << "Affection:   " << creature->affection() << "\n";
+	std::cout << "Growth:      " << creature->growth() << "\n";
+	std::cout << "Hunger:      " << creature->hunger() << "\n";
+	std::cout << "Interaction: " << creature->interaction() << "\n";
+	std::cout << "Health:      " << creature->health() << "\n";
+}
+
+void mainLoop::selectPet()
+{
+	display display;
+	display.clearScreen();
+	std::cout << "=== Select a Creature ===\n\n";
+	showStable();
+	std::cout << "\nEnter the number of the creature: ";
+
+	size_t index;
+	if (std::cin >> index)
+	{
+		if (index > 0 && index <= stable_.size())
+		{
+			interactWithPet(stable_[index - 1]);
+		}
+		else
+		{
+			std::cout << "Invalid creature number. Press Enter to return...";
+			std::cin.ignore(10000, '\n'); std::cin.get();
+		}
+	}
+	else
+	{
+		std::cout << "Invalid input. Press Enter to return...";
+		std::cin.clear();
+		std::cin.ignore(10000, '\n');
+		std::cin.get();
+	}
+}
+
+void mainLoop::interactWithPet(Creature* creature)
+{
+	display display;
+	bool running = true;
+
+	while (running)
+	{
+		showStats(creature);
 		display.showGameMenu();
-		
+
 		int choice;
-		
 		if (std::cin >> choice)
 		{
-			running = handleChoice(choice);
+			running = handleChoice(choice, creature);
 
 			if (running)
 			{
-				advanceTime();
+				advanceTime(creature);
 			}
 		}
 		else
@@ -47,21 +153,21 @@ void mainLoop::run()
 	}
 }
 
-void mainLoop::showStats() const
+void mainLoop::showStable() const
 {
-	display display;
-	display.clearScreen();
+	if (stable_.empty())
+	{
+		std::cout << "[ No creatures available ]\n";
+		return;
+	}
 
-	std::cout << "\n---" << creature_.name() << "---\n";
-	std::cout << display.getArt(creature_);
-	std::cout << "Affection:   " << creature_.affection() << "\n";
-	std::cout << "Growth:      " << creature_.growth() << "\n";
-	std::cout << "Hunger:      " << creature_.hunger() << "\n";
-	std::cout << "Interaction: " << creature_.interaction() << "\n";
-	std::cout << "Health:      " << creature_.health() << "\n";
+	for (size_t i = 0; i < stable_.size(); ++i)
+	{
+		std::cout << (i + 1) << ": " << stable_[i]->name() << "\n";
+	}
 }
 
-bool mainLoop::handleChoice(int choice)
+bool mainLoop::handleChoice(int choice, Creature* creature)
 {
 	//Handles all of the stat changes through interaction
 	//Can be expanded or changed to be more involved later
@@ -70,21 +176,21 @@ bool mainLoop::handleChoice(int choice)
 	case 0:
 		return false;
 	case 1:
-		creature_.changeHunger(15);
-		creature_.changeAffection(2);
-		std::cout << "You fed " << creature_.name() << ".\n";
+		creature->changeHunger(15);
+		creature->changeAffection(2);
+		std::cout << "You fed " << creature->name() << ".\n";
 		break;
 	case 2:
-		creature_.changeInteraction(10);
-		creature_.changeAffection(5);
-		creature_.changeHunger(-5);
-		creature_.changeGrowth(2);
-		std::cout << "You played with " << creature_.name() << ".\n";
+		creature->changeInteraction(10);
+		creature->changeAffection(5);
+		creature->changeHunger(-5);
+		creature->changeGrowth(2);
+		std::cout << "You played with " << creature->name() << ".\n";
 		break;
 	case 3:
-		creature_.changeHealth(15);
-		creature_.changeHunger(-3);
-		std::cout << "You gave " << creature_.name() << " medicine.\n";
+		creature->changeHealth(15);
+		creature->changeHunger(-3);
+		std::cout << "You gave " << creature->name() << " medicine.\n";
 		break;
 	default:
 		std::cout << "Please choose 0, 1, 2, or 3.\n";
@@ -93,9 +199,9 @@ bool mainLoop::handleChoice(int choice)
 	return true;
 }
 
-void mainLoop::advanceTime()
+void mainLoop::advanceTime(Creature* creature)
 {
 	//Basic input turn end to make the creature hungrier and less healthy over time
-	creature_.changeHunger(-2);
-	creature_.changeHealth(-1);
+	creature->changeHunger(-2);
+	creature->changeHealth(-1);
 }

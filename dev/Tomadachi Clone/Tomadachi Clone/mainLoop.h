@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "creature.h"
 #include "display.h"
 
@@ -6,12 +7,18 @@ class mainLoop
 {
 public:
 	void run();
+	~mainLoop();
 
 private:
-	Creature creature_;
+	//Creature creature_;
+	std::vector<Creature*> stable_;
 
-	void showStats() const;
-	bool handleChoice(int choice);
-	void advanceTime();
+	void selectPet();
+	void interactWithPet(Creature* creature);
+
+	void showStable() const;
+	void showStats(const Creature* creature) const;
+	bool handleChoice(int choice, Creature* creature);
+	void advanceTime(Creature* creature);
 };
 

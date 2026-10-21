@@ -104,6 +104,16 @@ void display::showGameMenu() const
     std::cout << "\n1. Feed\n";
     std::cout << "2. Play\n";
     std::cout << "3. Give Medication\n";
-    std::cout << "0. Quit to main menu\n";
+    std::cout << "0. Return to Pet Selection\n";
     std::cout << "Choose an action: ";
+}
+
+void display::showStableMenu() const
+{
+    std::cout << "=== Pet Stable ===\n\n";
+    std::cout << "\nOptions:\n";
+    std::cout << "1. Select a creature to manage\n";
+    std::cout << "2. Hatch a new creature\n";
+    std::cout << "0. Quit to Main Menu\n\n";
+    std::cout << "Choice: ";
 }

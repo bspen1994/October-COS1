@@ -13,5 +13,6 @@ public:
 
 	void showMainMenu() const;
 	void showGameMenu() const;
+	void showStableMenu() const;
 };
 
