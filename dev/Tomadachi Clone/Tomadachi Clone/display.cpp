@@ -86,3 +86,36 @@ void display::getInstructions()
     std::cin.get();
     
 }
+
+void display::showMainMenu() const
+{
+    std::cout << "\t=== Pet Keeper ===\n";
+    std::cout << "Welcome to your friend caretaker app!\n\n";
+    std::cout << "Please select an option below:\n";
+    std::cout << "1: New Game\n";
+    std::cout << "2: Load Saved Game\n";
+    std::cout << "3: Instructions\n";
+    std::cout << "4: Exit game\n\n";
+    std::cout << "Enter choice (1-4): ";
+
+}
+
+void display::showGameMenu() const
+{
+    std::cout << "\n1. Feed\n";
+    std::cout << "2: Play\n";
+    std::cout << "3: Give Medication\n";
+    std::cout << "0: Return to Pet Selection\n";
+    std::cout << "Choose an action: ";
+}
+
+void display::showStableMenu() const
+{
+    std::cout << "=== Pet Stable ===\n\n";
+    std::cout << "\nOptions:\n";
+    std::cout << "1: Select a creature to manage\n";
+    std::cout << "2: Hatch a new creature\n";
+    std::cout << "3: Save Game\n";
+    std::cout << "0: Quit to Main Menu\n\n";
+    std::cout << "Choice: ";
+}
