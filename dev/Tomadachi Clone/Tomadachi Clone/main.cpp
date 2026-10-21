@@ -26,15 +26,21 @@ int main()
         {
             mainLoop game;
             game.run();
-            
+            break;
         }
             break;
         case 2:
+        {
+            mainLoop game;
+            game.runWithLoad();
+            break;
+        }
+        case 3:
             display.clearScreen();
             display.getInstructions();
             std::cin.get();
             break;
-        case 3:
+        case 4:
             std::cout << "Thank you for playing!\n";
             return 0;
         default:

@@ -37,6 +37,9 @@ public:
 	void changeHealth(int amount);
 	void setName(const std::string& name);
 
+	void serialize(std::ostream& os) const;
+	void deserialize(std::istream& is);
+
 private:
 	Personality personality_;
 	int affection_;

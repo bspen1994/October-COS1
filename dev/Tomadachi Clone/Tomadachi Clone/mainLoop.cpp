@@ -1,6 +1,7 @@
 #include "mainLoop.h"
 #include <iostream>
 #include <string>
+#include <fstream>
 
 
 void mainLoop::run()
@@ -56,6 +57,10 @@ void mainLoop::run()
 				std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
 				std::cin.get();
 			}
+			else if (stableChoice == 3)
+			{
+				saveGame();
+			}
 			else
 			{
 				std::cout << "Invalid choice. Press Enter to continue...";
@@ -68,6 +73,58 @@ void mainLoop::run()
 			std::cin.clear();
 			std::cin.ignore(10000, '\n');
 		}
+	}
+}
+
+void mainLoop::runWithLoad()
+{
+	if (loadGame())
+	{
+		display display;
+		bool isStable = true;
+		while (isStable)
+		{
+			display.clearScreen();
+			showStable();
+			display.showStableMenu();
+
+			int stableChoice;
+			if (std::cin >> stableChoice)
+			{
+				if (stableChoice == 0)
+				{
+					isStable = false;
+				}
+				else if (stableChoice == 1)
+				{
+					selectPet();
+				}
+				else if (stableChoice == 2)
+				{
+					display.clearScreen();
+					Creature* newPet = new Creature();
+
+					std::cout << "A new egg is cracking! What will you name this creature? ";
+					std::string newCreatureName;
+					std::getline(std::cin >> std::ws, newCreatureName);
+					newPet->setName(newCreatureName);
+
+					stable_.push_back(newPet);
+
+					std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
+					std::cin.get();
+				}
+				else if (stableChoice == 3)
+				{
+					saveGame();
+				}
+			}
+		}
+	}
+	else
+	{
+		std::cout << "No save file found! Press Enter to return to main menu...";
+		std::cin.ignore(10000, '\n'); std::cin.get();
 	}
 }
 
@@ -92,6 +149,47 @@ void mainLoop::showStats(const Creature* creature) const
 	std::cout << "Hunger:      " << creature->hunger() << "\n";
 	std::cout << "Interaction: " << creature->interaction() << "\n";
 	std::cout << "Health:      " << creature->health() << "\n";
+}
+
+void mainLoop::saveGame() const
+{
+	std::ofstream outFile("savegame.txt");
+	if (!outFile)
+	{
+		std::cout << "Error: Could not create save file.\n";
+		return;
+	}
+
+	outFile << stable_.size() << "\n";
+
+	for (Creature* ptr : stable_)
+	{
+		ptr->serialize(outFile);
+	}
+
+	std::cout << "\nGame successfully saved! Press Enter to continue...";
+	std::cin.ignore(10000, '\n'); std::cin.get();
+}
+
+bool mainLoop::loadGame()
+{
+	std::ifstream inFile("savegame.txt");
+	if (!inFile)
+	{
+		return false;
+	}
+
+	size_t count;
+	if (inFile >> count)
+	{
+		for (size_t i = 0; i < count; ++i)
+		{
+			Creature* loadedPet = new Creature();
+			loadedPet->deserialize(inFile);
+			stable_.push_back(loadedPet);
+		}
+	}
+	return true;
 }
 
 void mainLoop::selectPet()

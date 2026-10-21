@@ -7,11 +7,15 @@ class mainLoop
 {
 public:
 	void run();
+	void runWithLoad();
 	~mainLoop();
 
 private:
 	//Creature creature_;
 	std::vector<Creature*> stable_;
+
+	void saveGame() const;
+	bool loadGame();
 
 	void selectPet();
 	void interactWithPet(Creature* creature);

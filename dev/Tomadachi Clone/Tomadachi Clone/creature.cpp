@@ -1,5 +1,7 @@
 #include "creature.h"
 #include <random>
+#include <iostream>
+#include <string>
 
 Creature::Creature()
 	: personality_(randomPersonality()),
@@ -140,6 +142,8 @@ int Creature::getModifiedInteraction(int amount) const
 		multiplier = 1.5;
 	case Personality::Calm:
 		multiplier = 1.0;
+	case Personality::Curious:
+		multiplier = 1.2;
 	default:
 		multiplier = 1.0;
 	}
@@ -179,6 +183,28 @@ void Creature::changeHealth(int amount)
 void Creature::setName(const std::string& name)
 {
 	name_ = name;
+}
+
+void Creature::serialize(std::ostream& os) const
+{
+	os << name_ << "\n"
+		<< static_cast<int>(personality_) << " "
+		<< affection_ << " "
+		<< growth_ << " "
+		<< hunger_ << " "
+		<< interaction_ << " "
+		<< health_ << "\n";
+}
+
+void Creature::deserialize(std::istream& is)
+{
+	std::getline(is >> std::ws, name_);
+
+	int personalityInt;
+	is >> personalityInt >> affection_ >> growth_ >> hunger_ >> interaction_ >> health_;
+
+	personality_ = static_cast<Personality>(personalityInt);
+
 }
 
 int Creature::limitStat(int value)
