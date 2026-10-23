@@ -14,5 +14,7 @@ public:
 	void showMainMenu() const;
 	void showGameMenu() const;
 	void showStableMenu() const;
+
+	int inputValidate(int min, int max) const;
 };
 

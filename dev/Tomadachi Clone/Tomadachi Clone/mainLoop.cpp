@@ -4,22 +4,36 @@
 #include <fstream>
 
 
-void mainLoop::run()
+void mainLoop::run(bool isLoad)
 {
-	display display;
-	std::string creatureName;
-	Creature* currentPet = new Creature();
-	
-	display.clearScreen();
+	display display; //Creates a new display object to call functions
 
-	//Asks to name your creature before the mainloop actually runs.
-	std::cout << "Your creature has hatched! What will you name it? ";
-	std::getline(std::cin >> std::ws, creatureName);
+	if (isLoad) //If the player selects to load game
+	{
+		if (!loadGame()) //If there is no save file
+		{
+			std::cout << "No save file found! Press Enter to return to main menu...";
+			std::string dummy;
+			std::getline(std::cin, dummy); //Pauses menu to allow player to read
+			return;
+		}
+	}
+	else //If it is a new game
+	{
+		std::string creatureName;
+		Creature* currentPet = new Creature(); //New default creature
 
-	//Sets the creatures name
-	currentPet->setName(creatureName);
+		display.clearScreen();
 
-	stable_.push_back(currentPet);
+		//Asks to name your creature before the mainloop actually runs.
+		std::cout << "Your creature has hatched! What will you name it? ";
+		std::getline(std::cin, creatureName);
+
+		//Sets the creatures name
+		currentPet->setName(creatureName);
+
+		stable_.push_back(currentPet);
+	}
 
 	bool running = true;
 
@@ -30,113 +44,53 @@ void mainLoop::run()
 		display.clearScreen();
 		display.showStableMenu();
 
-		int stableChoice;
-		if (std::cin >> stableChoice)
+		int stableChoice = display.inputValidate(0, 3); //call input function to keep it within 0-3
+
+		if (stableChoice == 0)
 		{
-			if (stableChoice == 0)
-			{
-				running = false;
-			}
-			else if (stableChoice == 1)
-			{
-				selectPet();
-			}
-			else if (stableChoice == 2)
-			{
-				display.clearScreen();
-				Creature* newPet = new Creature();
-
-				std::cout << "A new egg is cracking! What will you name this creature? ";
-				std::string newCreatureName;
-				std::getline(std::cin >> std::ws, newCreatureName);
-				newPet->setName(newCreatureName);
-
-				stable_.push_back(newPet);
-
-				std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
-				std::cin.get();
-			}
-			else if (stableChoice == 3)
-			{
-				saveGame();
-			}
-			else
-			{
-				std::cout << "Invalid choice. Press Enter to continue...";
-				std::cin.ignore(10000, '\n'); std::cin.get();
-			}
+			running = false; //Returns to main menu
 		}
-		else
+		else if (stableChoice == 1)
 		{
-			std::cout << "Please enter a valid number.\n";
-			std::cin.clear();
-			std::cin.ignore(10000, '\n');
+			selectPet(); //Goes to main loop to care for pet
 		}
-	}
-}
-
-void mainLoop::runWithLoad()
-{
-	if (loadGame())
-	{
-		display display;
-		bool isStable = true;
-		while (isStable)
+		else if (stableChoice == 2)
 		{
+			//This is to add a new pet to your stable in the pet managment menu
 			display.clearScreen();
-			display.showStableMenu();
+			Creature* newPet = new Creature();
 
-			int stableChoice;
-			if (std::cin >> stableChoice)
-			{
-				if (stableChoice == 0)
-				{
-					isStable = false;
-				}
-				else if (stableChoice == 1)
-				{
-					selectPet();
-				}
-				else if (stableChoice == 2)
-				{
-					display.clearScreen();
-					Creature* newPet = new Creature();
+			std::cout << "A new egg is cracking! What will you name this creature? ";
+			std::string newCreatureName;
+			std::getline(std::cin, newCreatureName);
+			newPet->setName(newCreatureName);
 
-					std::cout << "A new egg is cracking! What will you name this creature? ";
-					std::string newCreatureName;
-					std::getline(std::cin >> std::ws, newCreatureName);
-					newPet->setName(newCreatureName);
+			stable_.push_back(newPet);
 
-					stable_.push_back(newPet);
-
-					std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
-					std::cin.get();
-				}
-				else if (stableChoice == 3)
-				{
-					saveGame();
-				}
-			}
+			std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
+			std::string dummy;
+			std::getline(std::cin, dummy);
 		}
-	}
-	else
-	{
-		std::cout << "No save file found! Press Enter to return to main menu...";
-		std::cin.ignore(10000, '\n'); std::cin.get();
+		else if (stableChoice == 3)
+		{
+			saveGame(); //Saves game to savegame.txt
+		}
 	}
 }
 
 mainLoop::~mainLoop()
 {
+	//destructor
 	for (Creature* ptr : stable_)
 	{
-		delete ptr;
+		delete ptr; //Safely frees the heap memory for each creature
 	}
 	stable_.clear();
 }
 
 void mainLoop::showStats(const Creature* creature) const
 {
+	//Shows stats of the pet/creature
 	display display;
 	display.clearScreen();
 
@@ -151,6 +105,7 @@ void mainLoop::showStats(const Creature* creature) const
 
 void mainLoop::saveGame() const
 {
+	//Save function to save the creature vector into the save file
 	std::ofstream outFile("savegame.txt");
 	if (!outFile)
 	{
@@ -166,11 +121,13 @@ void mainLoop::saveGame() const
 	}
 
 	std::cout << "\nGame successfully saved! Press Enter to continue...";
-	std::cin.ignore(10000, '\n'); std::cin.get();
+	std::string dummy;
+	std::getline(std::cin, dummy);
 }
 
 bool mainLoop::loadGame()
 {
+	//Loads the game from savegame to fill the creature vector
 	std::ifstream inFile("savegame.txt");
 	if (!inFile)
 	{
@@ -192,36 +149,24 @@ bool mainLoop::loadGame()
 
 void mainLoop::selectPet()
 {
+	//Shows the vector of creatures and allows you to select one to "play" with
 	display display;
 	display.clearScreen();
 	std::cout << "=== Select a Creature ===\n\n";
 	showStable();
 	std::cout << "\nEnter the number of the creature: ";
 
-	size_t index;
-	if (std::cin >> index)
+	int index = display.inputValidate(0, static_cast<int>(stable_.size()));
+
+	if (index > 0)
 	{
-		if (index > 0 && index <= stable_.size())
-		{
-			interactWithPet(stable_[index - 1]);
-		}
-		else
-		{
-			std::cout << "Invalid creature number. Press Enter to return...";
-			std::cin.ignore(10000, '\n'); std::cin.get();
-		}
-	}
-	else
-	{
-		std::cout << "Invalid input. Press Enter to return...";
-		std::cin.clear();
-		std::cin.ignore(10000, '\n');
-		std::cin.get();
+		interactWithPet(stable_[index - 1]);
 	}
 }
 
 void mainLoop::interactWithPet(Creature* creature)
 {
+	//Brings in a pointer to a creature object to modify it's stats
 	display display;
 	bool running = true;
 
@@ -230,27 +175,22 @@ void mainLoop::interactWithPet(Creature* creature)
 		showStats(creature);
 		display.showGameMenu();
 
-		int choice;
-		if (std::cin >> choice)
-		{
-			running = handleChoice(choice, creature);
+		int choice = display.inputValidate(0, 3);
+		running = handleChoice(choice, creature);
 
-			if (running)
-			{
-				advanceTime(creature);
-			}
-		}
-		else
+		if (running)
 		{
-			std::cout << "Please enter a number.\n";
-			std::cin.clear();
-			std::cin.ignore(10000, '\n');
+			advanceTime(creature);
+			std::cout << "\nPress Enter to continue...";
+			std::string dummy;
+			std::getline(std::cin, dummy);
 		}
 	}
 }
 
 void mainLoop::showStable() const
 {
+	//Simple vector print to show all the available pets
 	if (stable_.empty())
 	{
 		std::cout << "[ No creatures available ]\n";
@@ -261,6 +201,7 @@ void mainLoop::showStable() const
 	{
 		std::cout << (i + 1) << ": " << stable_[i]->name() << "\n";
 	}
+	std::cout << "0: Return to Stable Menu\n";
 }
 
 bool mainLoop::handleChoice(int choice, Creature* creature)

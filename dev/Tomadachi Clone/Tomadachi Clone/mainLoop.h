@@ -6,8 +6,7 @@
 class mainLoop
 {
 public:
-	void run();
-	void runWithLoad();
+	void run(bool isLoad);
 	~mainLoop();
 
 private:

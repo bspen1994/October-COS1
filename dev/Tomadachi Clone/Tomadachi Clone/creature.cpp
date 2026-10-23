@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-Creature::Creature()
+Creature::Creature() //Default creature
 	: personality_(randomPersonality()),
 	affection_(50),
 	growth_(0),
@@ -51,6 +51,7 @@ const std::string& Creature::name() const
 
 int Creature::getModifiedAffection(int amount) const
 {
+	//Different modifiers for the affection gain based on personality
 	double multiplier = 1.0;
 
 	switch (personality_)
@@ -86,6 +87,7 @@ int Creature::getModifiedAffection(int amount) const
 
 int Creature::getModifiedHunger(int amount) const
 {
+	//Modified hunger based on personality
 	double multiplier = 1.0;
 
 	switch (personality_)
@@ -121,6 +123,7 @@ int Creature::getModifiedHunger(int amount) const
 
 int Creature::getModifiedGrowth(int amount) const
 {
+	//Modified Growth based on personality
 	double multiplier = 1.0;
 
 	switch (personality_)
@@ -156,6 +159,7 @@ int Creature::getModifiedGrowth(int amount) const
 
 int Creature::getModifiedInteraction(int amount) const
 {
+	//Modified Interaction based on personality
 	double multiplier = 1.0;
 
 	switch (personality_)
@@ -225,6 +229,7 @@ void Creature::setName(const std::string& name)
 
 void Creature::serialize(std::ostream& os) const
 {
+	//Writes creature data to file
 	os << name_ << "\n"
 		<< static_cast<int>(personality_) << " "
 		<< affection_ << " "
@@ -236,6 +241,7 @@ void Creature::serialize(std::ostream& os) const
 
 void Creature::deserialize(std::istream& is)
 {
+	//Reads creature data from file
 	std::getline(is >> std::ws, name_);
 
 	int personalityInt;
@@ -247,6 +253,7 @@ void Creature::deserialize(std::istream& is)
 
 int Creature::limitStat(int value)
 {
+	//Clamps the max and min value to 0 and 100 respectively
 	if (value < 0) 
 	{
 		return 0;
@@ -263,6 +270,7 @@ int Creature::limitStat(int value)
 
 Creature::Personality Creature::randomPersonality()
 {
+	//Calls a random personality for the creature
 	static std::mt19937 rng{ std::random_device{}() };
 	std::uniform_int_distribution<int> distribution(0, 6);
 
