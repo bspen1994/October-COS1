@@ -6,22 +6,22 @@
 
 void mainLoop::run(bool isLoad)
 {
-	display display;
+	display display; //Creates a new display object to call functions
 
-	if (isLoad)
+	if (isLoad) //If the player selects to load game
 	{
-		if (!loadGame())
+		if (!loadGame()) //If there is no save file
 		{
 			std::cout << "No save file found! Press Enter to return to main menu...";
 			std::string dummy;
-			std::getline(std::cin, dummy);
+			std::getline(std::cin, dummy); //Pauses menu to allow player to read
 			return;
 		}
 	}
-	else
+	else //If it is a new game
 	{
 		std::string creatureName;
-		Creature* currentPet = new Creature();
+		Creature* currentPet = new Creature(); //New default creature
 
 		display.clearScreen();
 
@@ -44,18 +44,19 @@ void mainLoop::run(bool isLoad)
 		display.clearScreen();
 		display.showStableMenu();
 
-		int stableChoice = display.inputValidate(0, 3);
+		int stableChoice = display.inputValidate(0, 3); //call input function to keep it within 0-3
 
 		if (stableChoice == 0)
 		{
-			running = false;
+			running = false; //Returns to main menu
 		}
 		else if (stableChoice == 1)
 		{
-			selectPet();
+			selectPet(); //Goes to main loop to care for pet
 		}
 		else if (stableChoice == 2)
 		{
+			//This is to add a new pet to your stable in the pet managment menu
 			display.clearScreen();
 			Creature* newPet = new Creature();
 
@@ -72,22 +73,24 @@ void mainLoop::run(bool isLoad)
 		}
 		else if (stableChoice == 3)
 		{
-			saveGame();
+			saveGame(); //Saves game to savegame.txt
 		}
 	}
 }
 
 mainLoop::~mainLoop()
 {
+	//destructor
 	for (Creature* ptr : stable_)
 	{
-		delete ptr;
+		delete ptr; //Safely frees the heap memory for each creature
 	}
 	stable_.clear();
 }
 
 void mainLoop::showStats(const Creature* creature) const
 {
+	//Shows stats of the pet/creature
 	display display;
 	display.clearScreen();
 
@@ -102,6 +105,7 @@ void mainLoop::showStats(const Creature* creature) const
 
 void mainLoop::saveGame() const
 {
+	//Save function to save the creature vector into the save file
 	std::ofstream outFile("savegame.txt");
 	if (!outFile)
 	{
@@ -123,6 +127,7 @@ void mainLoop::saveGame() const
 
 bool mainLoop::loadGame()
 {
+	//Loads the game from savegame to fill the creature vector
 	std::ifstream inFile("savegame.txt");
 	if (!inFile)
 	{
@@ -144,6 +149,7 @@ bool mainLoop::loadGame()
 
 void mainLoop::selectPet()
 {
+	//Shows the vector of creatures and allows you to select one to "play" with
 	display display;
 	display.clearScreen();
 	std::cout << "=== Select a Creature ===\n\n";
@@ -160,6 +166,7 @@ void mainLoop::selectPet()
 
 void mainLoop::interactWithPet(Creature* creature)
 {
+	//Brings in a pointer to a creature object to modify it's stats
 	display display;
 	bool running = true;
 
@@ -183,6 +190,7 @@ void mainLoop::interactWithPet(Creature* creature)
 
 void mainLoop::showStable() const
 {
+	//Simple vector print to show all the available pets
 	if (stable_.empty())
 	{
 		std::cout << "[ No creatures available ]\n";
