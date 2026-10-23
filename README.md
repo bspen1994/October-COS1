@@ -67,9 +67,17 @@ Since week 4 is mainly finishing the project I won't be adding anything too majo
 ### Week 4
 
 ⚙️ Overview - What I worked on this past week
-<br>
+
+Fixed user input validation to be a single point method for most input areas. Refactored runWithLoad into run method since they shared ~90% of the same code base. Added comments as needed to clarify methods and functions within the program. Fixed some errant menu interactions so the game properly pauses to displays interactions.
+
 🌵 Challenges - What problems did I have & how I'm addressing them
-<br>
+
+Main issues I have is just reliably watching the lectures. Once I rewatched lecture 3 it was pretty easy to fix my input validation. Just watching the lectures properly would solve my issues.
+
 🏆 Accomplishments - What is something I "leveled up" on this week
-<br>
+
+I "leveled up" on being more methodical about notating my work with comments so my program can be opened, easily read, and understood.
+
 🔮 Next Steps - What I plan to prioritize and do next
+
+If I continued this project I would add more pet interactions. With only 3 interactions the gameplay is a tad simple and it would be neat to allow the pets to play with each other. There is very little interplay between the pets and that would be the next feature set I would add in general.
