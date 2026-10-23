@@ -83,8 +83,9 @@ void display::getInstructions()
     std::cout << "2. Pet: This allows you to pet your pet and fills the affection bar.\n";
     std::cout << "3. Give Medicine: This heals your pet but also lowers their hunger bar.\n";
     std::cout << "Press enter to return to previous menu.\n";
-    std::cin.get();
     
+    std::string dummy;
+    std::getline(std::cin, dummy);
 }
 
 void display::showMainMenu() const
@@ -118,4 +119,28 @@ void display::showStableMenu() const
     std::cout << "3: Save Game\n";
     std::cout << "0: Quit to Main Menu\n\n";
     std::cout << "Choice: ";
+}
+
+int display::inputValidate(int min, int max) const
+{
+    std::string input;
+    int number;
+
+    while (true)
+    {
+        std::getline(std::cin, input);
+        try
+        {
+            number = std::stoi(input);
+            if (number >= min && number <= max)
+            {
+                return number;
+            }
+            std::cout << "Invalid choice. Please enter a number between " << min << ", and " << max << ": ";
+        }
+        catch (...)
+        {
+            std::cout << "Invalid choice. Please enter a number between " << min << ", and " << max << ": ";
+        }
+    }
 }

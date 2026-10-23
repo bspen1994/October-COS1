@@ -14,7 +14,7 @@ void mainLoop::run()
 
 	//Asks to name your creature before the mainloop actually runs.
 	std::cout << "Your creature has hatched! What will you name it? ";
-	std::getline(std::cin >> std::ws, creatureName);
+	std::getline(std::cin, creatureName);
 
 	//Sets the creatures name
 	currentPet->setName(creatureName);
@@ -30,47 +30,35 @@ void mainLoop::run()
 		display.clearScreen();
 		display.showStableMenu();
 
-		int stableChoice;
-		if (std::cin >> stableChoice)
+		int stableChoice = display.inputValidate(0, 3);
+
+		if (stableChoice == 0)
 		{
-			if (stableChoice == 0)
-			{
-				running = false;
-			}
-			else if (stableChoice == 1)
-			{
-				selectPet();
-			}
-			else if (stableChoice == 2)
-			{
-				display.clearScreen();
-				Creature* newPet = new Creature();
-
-				std::cout << "A new egg is cracking! What will you name this creature? ";
-				std::string newCreatureName;
-				std::getline(std::cin >> std::ws, newCreatureName);
-				newPet->setName(newCreatureName);
-
-				stable_.push_back(newPet);
-
-				std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
-				std::cin.get();
-			}
-			else if (stableChoice == 3)
-			{
-				saveGame();
-			}
-			else
-			{
-				std::cout << "Invalid choice. Press Enter to continue...";
-				std::cin.ignore(10000, '\n'); std::cin.get();
-			}
+			running = false;
 		}
-		else
+		else if (stableChoice == 1)
 		{
-			std::cout << "Please enter a valid number.\n";
-			std::cin.clear();
-			std::cin.ignore(10000, '\n');
+			selectPet();
+		}
+		else if (stableChoice == 2)
+		{
+			display.clearScreen();
+			Creature* newPet = new Creature();
+
+			std::cout << "A new egg is cracking! What will you name this creature? ";
+			std::string newCreatureName;
+			std::getline(std::cin, newCreatureName);
+			newPet->setName(newCreatureName);
+
+			stable_.push_back(newPet);
+
+			std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
+			std::string dummy;
+			std::getline(std::cin, dummy);
+		}
+		else if (stableChoice == 3)
+		{
+			saveGame();
 		}
 	}
 }
@@ -86,43 +74,37 @@ void mainLoop::runWithLoad()
 			display.clearScreen();
 			display.showStableMenu();
 
-			int stableChoice;
-			if (std::cin >> stableChoice)
+			int stableChoice = display.inputValidate(0, 3);
+
+			if (stableChoice == 0)
 			{
-				if (stableChoice == 0)
-				{
-					isStable = false;
-				}
-				else if (stableChoice == 1)
-				{
-					selectPet();
-				}
-				else if (stableChoice == 2)
-				{
-					display.clearScreen();
-					Creature* newPet = new Creature();
+				isStable = false;
+			}
+			else if (stableChoice == 1)
+			{
+				selectPet();
+			}
+			else if (stableChoice == 2)
+			{
+				display.clearScreen();
+				Creature* newPet = new Creature();
 
-					std::cout << "A new egg is cracking! What will you name this creature? ";
-					std::string newCreatureName;
-					std::getline(std::cin >> std::ws, newCreatureName);
-					newPet->setName(newCreatureName);
+				std::cout << "A new egg is cracking! What will you name this creature? ";
+				std::string newCreatureName;
+				std::getline(std::cin, newCreatureName);
+				newPet->setName(newCreatureName);
 
-					stable_.push_back(newPet);
+				stable_.push_back(newPet);
 
-					std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
-					std::cin.get();
-				}
-				else if (stableChoice == 3)
-				{
-					saveGame();
-				}
+				std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
+				std::string dummy;
+				std::getline(std::cin, dummy);
+			}
+			else if (stableChoice == 3)
+			{
+				saveGame();
 			}
 		}
-	}
-	else
-	{
-		std::cout << "No save file found! Press Enter to return to main menu...";
-		std::cin.ignore(10000, '\n'); std::cin.get();
 	}
 }
 
@@ -166,7 +148,8 @@ void mainLoop::saveGame() const
 	}
 
 	std::cout << "\nGame successfully saved! Press Enter to continue...";
-	std::cin.ignore(10000, '\n'); std::cin.get();
+	std::string dummy;
+	std::getline(std::cin, dummy);
 }
 
 bool mainLoop::loadGame()
@@ -198,25 +181,11 @@ void mainLoop::selectPet()
 	showStable();
 	std::cout << "\nEnter the number of the creature: ";
 
-	size_t index;
-	if (std::cin >> index)
+	int index = display.inputValidate(0, static_cast<int>(stable_.size()));
+
+	if (index > 0)
 	{
-		if (index > 0 && index <= stable_.size())
-		{
-			interactWithPet(stable_[index - 1]);
-		}
-		else
-		{
-			std::cout << "Invalid creature number. Press Enter to return...";
-			std::cin.ignore(10000, '\n'); std::cin.get();
-		}
-	}
-	else
-	{
-		std::cout << "Invalid input. Press Enter to return...";
-		std::cin.clear();
-		std::cin.ignore(10000, '\n');
-		std::cin.get();
+		interactWithPet(stable_[index - 1]);
 	}
 }
 
@@ -230,21 +199,15 @@ void mainLoop::interactWithPet(Creature* creature)
 		showStats(creature);
 		display.showGameMenu();
 
-		int choice;
-		if (std::cin >> choice)
-		{
-			running = handleChoice(choice, creature);
+		int choice = display.inputValidate(0, 3);
+		running = handleChoice(choice, creature);
 
-			if (running)
-			{
-				advanceTime(creature);
-			}
-		}
-		else
+		if (running)
 		{
-			std::cout << "Please enter a number.\n";
-			std::cin.clear();
-			std::cin.ignore(10000, '\n');
+			advanceTime(creature);
+			std::cout << "\nPress Enter to continue...";
+			std::string dummy;
+			std::getline(std::cin, dummy);
 		}
 	}
 }
