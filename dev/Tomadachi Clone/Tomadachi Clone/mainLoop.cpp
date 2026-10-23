@@ -201,6 +201,7 @@ void mainLoop::showStable() const
 	{
 		std::cout << (i + 1) << ": " << stable_[i]->name() << "\n";
 	}
+	std::cout << "0: Return to Stable Menu\n";
 }
 
 bool mainLoop::handleChoice(int choice, Creature* creature)
