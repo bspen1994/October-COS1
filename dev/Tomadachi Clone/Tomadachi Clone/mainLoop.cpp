@@ -4,22 +4,36 @@
 #include <fstream>
 
 
-void mainLoop::run()
+void mainLoop::run(bool isLoad)
 {
 	display display;
-	std::string creatureName;
-	Creature* currentPet = new Creature();
-	
-	display.clearScreen();
 
-	//Asks to name your creature before the mainloop actually runs.
-	std::cout << "Your creature has hatched! What will you name it? ";
-	std::getline(std::cin, creatureName);
+	if (isLoad)
+	{
+		if (!loadGame())
+		{
+			std::cout << "No save file found! Press Enter to return to main menu...";
+			std::string dummy;
+			std::getline(std::cin, dummy);
+			return;
+		}
+	}
+	else
+	{
+		std::string creatureName;
+		Creature* currentPet = new Creature();
 
-	//Sets the creatures name
-	currentPet->setName(creatureName);
+		display.clearScreen();
 
-	stable_.push_back(currentPet);
+		//Asks to name your creature before the mainloop actually runs.
+		std::cout << "Your creature has hatched! What will you name it? ";
+		std::getline(std::cin, creatureName);
+
+		//Sets the creatures name
+		currentPet->setName(creatureName);
+
+		stable_.push_back(currentPet);
+	}
 
 	bool running = true;
 
@@ -59,51 +73,6 @@ void mainLoop::run()
 		else if (stableChoice == 3)
 		{
 			saveGame();
-		}
-	}
-}
-
-void mainLoop::runWithLoad()
-{
-	if (loadGame())
-	{
-		display display;
-		bool isStable = true;
-		while (isStable)
-		{
-			display.clearScreen();
-			display.showStableMenu();
-
-			int stableChoice = display.inputValidate(0, 3);
-
-			if (stableChoice == 0)
-			{
-				isStable = false;
-			}
-			else if (stableChoice == 1)
-			{
-				selectPet();
-			}
-			else if (stableChoice == 2)
-			{
-				display.clearScreen();
-				Creature* newPet = new Creature();
-
-				std::cout << "A new egg is cracking! What will you name this creature? ";
-				std::string newCreatureName;
-				std::getline(std::cin, newCreatureName);
-				newPet->setName(newCreatureName);
-
-				stable_.push_back(newPet);
-
-				std::cout << "\n" << newPet->name() << " has joined your stable! Press Enter...";
-				std::string dummy;
-				std::getline(std::cin, dummy);
-			}
-			else if (stableChoice == 3)
-			{
-				saveGame();
-			}
 		}
 	}
 }

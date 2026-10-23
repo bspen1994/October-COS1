@@ -20,14 +20,14 @@ int main()
         case 1:
         {
             mainLoop game;
-            game.run();
+            game.run(false);
             break;
         }
             break;
         case 2:
         {
             mainLoop game;
-            game.runWithLoad();
+            game.run(true);
             break;
         }
         case 3:
